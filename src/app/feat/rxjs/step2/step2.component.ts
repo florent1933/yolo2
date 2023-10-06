@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, combineLatest, map, timer } from 'rxjs';
 
+interface ORDER {
+  nbOfChocolatines: number;
+  nbOfCroissants: number;
+  date: Date;
+}
+
 const CHOLATINES_PRODUCTION = 3;
 const CHOCOLATINE_FACTORY_PRICE = 0.2;
 const CROISSANTS_FACTORY_PRICE = 0.16;
@@ -30,7 +36,27 @@ export class Step2Component implements OnInit {
     this.croissantsCost$,
   ]).pipe(map(([x, y]) => x + y));
 
+  customerTimer$ = timer(5000, 5000);
+
+  orders: ORDER[] = [];
+  orders$: Observable<ORDER[]> = this.customerTimer$.pipe(
+    map((c) => {
+      let newOrder: ORDER = {
+        nbOfChocolatines: this.getRandomNumber(1, 10),
+        nbOfCroissants: this.getRandomNumber(1, 10),
+        date: new Date(),
+      };
+
+      this.orders.push(newOrder);
+      return this.orders;
+    })
+  );
+
   constructor() {}
 
   ngOnInit(): void {}
+
+  getRandomNumber(min: number, max: number): number {
+    return Math.floor(Math.random() * (max + 1)) + min;
+  }
 }

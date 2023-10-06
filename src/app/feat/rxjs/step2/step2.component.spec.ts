@@ -8,9 +8,8 @@ describe('Step2Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ Step2Component ]
-    })
-    .compileComponents();
+      declarations: [Step2Component],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -21,5 +20,9 @@ describe('Step2Component', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should test getRandomNumber', () => {
+    expect(component.getRandomNumber(1, 1)).toEqual(1);
   });
 });

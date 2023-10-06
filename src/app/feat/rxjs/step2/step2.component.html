@@ -14,3 +14,14 @@ Cout de production croissants :
   <legend>Coût total de la production</legend>
   {{ costFactory$ | async | currency : "EUR" }}
 </fieldset>
+
+<hr />
+
+Commandes :
+<ul>
+  <li *ngFor="let order of orders$ | async">
+    Date: {{ order.date | date : "long" }}<br />
+    Chocolatines: {{ order.nbOfChocolatines }}<br />
+    Croissants: {{ order.nbOfCroissants }}<br />
+  </li>
+</ul>
