@@ -1,8 +1,15 @@
 <h1>BOULANGERIES</h1>
 
+<h3>Productions :</h3>
 🍫 Chocolatines : {{ chocolatines$ | async }} <br />
 🥐 Croissants :
 {{ croissants$ | async }}
+<hr />
+
+<h3>Stocks :</h3>
+
+🍫 Chocolatines : {{ (stocks$ | async)?.chocolatines }} <br />
+🥐 Croissants : {{ (stocks$ | async)?.croissants }} <br />
 
 <hr />
 Cout de production chocolatines :
@@ -17,6 +24,15 @@ Cout de production croissants :
 
 <hr />
 
+Gain :<br />
+<div *ngIf="moneys$ | async; let money">
+  Chocolatine gain: {{ money.moenyChocolatines | currency }} pour
+  {{ money.nbOfChocolatines }}<br />
+  Croissant gain: {{ money.moneyCroissants | currency }} pour
+  {{ money.nbOfCroissants }}<br />
+</div>
+
+<hr />
 Commandes :
 <ul>
   <li *ngFor="let order of orders$ | async">
