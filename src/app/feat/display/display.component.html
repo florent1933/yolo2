@@ -1,0 +1,11 @@
+<p class="z">
+  Nb of yolos to display: {{ nbOfYolos?.length }}
+  <span
+    class="blue"
+    *ngFor="let y of nbOfYolos; let i = index; let odd = odd"
+    [ngClass]="[odd ? 'rainbow' : null]"
+    [ngStyle]="{ 'background-color': getColor(i) }"
+  >
+    Yolo
+  </span>
+</p>

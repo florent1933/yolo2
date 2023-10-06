@@ -13,6 +13,8 @@ export class NewCmpComponent implements OnInit {
   title = 'Hello';
   interval: number = 0;
 
+  yolosNumber: any[] = [];
+
   addFormPerson: Person = { ...initialStatePerson };
 
   persons: Person[] = [
