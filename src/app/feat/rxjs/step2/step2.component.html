@@ -1,0 +1,16 @@
+<h1>BOULANGERIES</h1>
+
+🍫 Chocolatines : {{ chocolatines$ | async }} <br />
+🥐 Croissants :
+{{ croissants$ | async }}
+
+<hr />
+Cout de production chocolatines :
+{{ chocolatinesCost$ | async | currency : "EUR" }} <br />
+Cout de production croissants :
+{{ croissantsCost$ | async | currency : "EUR" }} <br />
+<br />
+<fieldset>
+  <legend>Coût total de la production</legend>
+  {{ costFactory$ | async | currency : "EUR" }}
+</fieldset>
