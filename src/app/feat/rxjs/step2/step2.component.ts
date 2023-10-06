@@ -1,5 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, combineLatest, map, timer } from 'rxjs';
+import {
+  Observable,
+  combineLatest,
+  lastValueFrom,
+  map,
+  shareReplay,
+  switchMap,
+  take,
+  timer,
+} from 'rxjs';
 
 interface ORDER {
   nbOfChocolatines: number;
@@ -28,15 +37,15 @@ const CROISSANTS_FACTORY_PRICE = 0.16;
   styleUrls: ['./step2.component.scss'],
 })
 export class Step2Component implements OnInit {
-  chocolatines$: Observable<number> = timer(0, 3000).pipe(
-    map((x) => CHOLATINES_PRODUCTION * x)
-  );
+  chocolatines$: Observable<number> = timer(0, 3000)
+    .pipe(map((x) => CHOLATINES_PRODUCTION * x))
+    .pipe(shareReplay(1));
 
   chocolatinesCost$ = this.chocolatines$.pipe(
     map((chocolatines) => chocolatines * CHOCOLATINE_FACTORY_PRICE)
   );
 
-  croissants$: Observable<number> = timer(0, 300);
+  croissants$: Observable<number> = timer(0, 300).pipe(shareReplay(1));
 
   croissantsCost$ = this.croissants$.pipe(
     map((c) => c * CROISSANTS_FACTORY_PRICE)
@@ -51,16 +60,32 @@ export class Step2Component implements OnInit {
 
   orders: ORDER[] = [];
   orders$: Observable<ORDER[]> = this.customerTimer$.pipe(
-    map((c) => {
+    switchMap(async (c) => {
+      const maxCroissantsAvailable = await lastValueFrom(
+        this.croissants$.pipe(take(1))
+      );
+      const maxChocolatinesAvailable = await lastValueFrom(
+        this.chocolatines$.pipe(take(1))
+      );
+
+      console.log('maxCroissantsAvailable', maxCroissantsAvailable);
+
       let newOrder: ORDER = {
-        nbOfChocolatines: this.getRandomNumber(1, 10),
-        nbOfCroissants: this.getRandomNumber(1, 10),
+        nbOfChocolatines: this.getRandomNumber(
+          0,
+          maxChocolatinesAvailable > 10 ? 10 : maxChocolatinesAvailable
+        ),
+        nbOfCroissants: this.getRandomNumber(
+          0,
+          maxCroissantsAvailable > 10 ? 10 : maxCroissantsAvailable
+        ),
         date: new Date(),
       };
 
       this.orders.push(newOrder);
       return this.orders;
-    })
+    }),
+    shareReplay(1)
   );
 
   moneys$: Observable<ORDER_SUMMARY> = this.orders$.pipe(
@@ -108,6 +133,8 @@ export class Step2Component implements OnInit {
   ngOnInit(): void {}
 
   getRandomNumber(min: number, max: number): number {
-    return Math.floor(Math.random() * max) + min;
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 }
