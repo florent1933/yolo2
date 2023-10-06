@@ -1,0 +1,34 @@
+<p>new-cmp works!</p>
+
+{{ title }} {{ interval }}
+<br />
+
+<div *ngFor="let p of persons">
+  <app-person-card [person]="p" (deletePerson)="die(p)"></app-person-card>
+
+  <br />
+  <button *ngIf="!p.diedAt" type="button" (click)="die(p)">Meurt</button>
+
+  <button *ngIf="p.diedAt" type="button" (click)="notDie(p)">Revis</button>
+  <hr />
+</div>
+
+<h3>Liste des personnes décédées ({{ lists.length }})</h3>
+
+<ul>
+  <li *ngFor="let p of lists">
+    <app-person-card
+      [person]="p"
+      [size]="'small'"
+      (deletePerson)="die(p)"
+    ></app-person-card>
+  </li>
+</ul>
+
+<h3>Formulaire d'ajout de personne</h3>
+Name:
+<input type="text" required [(ngModel)]="addFormPerson.name" />
+<br /><br />
+Age: <input type="number" required [(ngModel)]="addFormPerson.age" />
+
+<button type="button" (click)="addPerson()">Ajouter</button>

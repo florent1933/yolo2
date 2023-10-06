@@ -1,0 +1,16 @@
+<div *ngIf="person; let p" [ngClass]="{ small: size === 'small' }">
+  <div *ngIf="size === 'small'">JE suis petit</div>
+  <img *ngIf="p.age < 50" height="60" [src]="p.img" />
+
+  <img
+    *ngIf="p.age === 50"
+    height="60"
+    src="https://www.gala.fr/imgre/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2Fprismamedia_people.2F2017.2F06.2F30.2Fa04f279c-b1ca-404c-ae77-32683e4a8b85.2Ejpeg/100x100/quality/80/john-lennon.jpg 1x, https://www.gala.fr/imgre/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2Fprismamedia_people.2F2017.2F06.2F30.2Fa04f279c-b1ca-404c-ae77-32683e4a8b85.2Ejpeg/200x200/quality/80/john-lennon.jpg"
+  />
+
+  <br />
+  {{ p.name | uppercase }}: {{ p.age }}
+  <span *ngIf="p.diedAt">Mort à : {{ p.diedAt }}</span>
+
+  <button type="button" (click)="die()">Meurt</button>
+</div>
