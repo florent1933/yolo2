@@ -34,6 +34,19 @@ Gain :<br />
   {{ money.moneyCroissants + money.moenyChocolatines | currency }}
 </div>
 
+<div class="chart">
+  <canvas
+    height="300"
+    width="300"
+    baseChart
+    class="chart"
+    [data]="pieChartData"
+    [type]="pieChartType"
+    [options]="pieChartOptions"
+  >
+  </canvas>
+</div>
+
 <hr />
 Commandes :
 <ul>

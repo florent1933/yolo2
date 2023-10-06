@@ -8,6 +8,7 @@ import { PersonCardComponent } from './feat/person-card/person-card.component';
 import { DisplayComponent } from './feat/display/display.component';
 import { Step1Component } from './feat/rxjs/step1/step1.component';
 import { Step2Component } from './feat/rxjs/step2/step2.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import { Step2Component } from './feat/rxjs/step2/step2.component';
     Step1Component,
     Step2Component,
   ],
-  imports: [BrowserModule, FormsModule],
+  imports: [BrowserModule, FormsModule, NgChartsModule],
   providers: [],
   bootstrap: [AppComponent],
 })

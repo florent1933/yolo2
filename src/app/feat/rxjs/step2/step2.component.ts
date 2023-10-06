@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
 import {
   Observable,
   combineLatest,
@@ -7,6 +9,7 @@ import {
   shareReplay,
   switchMap,
   take,
+  tap,
   timer,
 } from 'rxjs';
 
@@ -37,6 +40,30 @@ const CROISSANTS_FACTORY_PRICE = 0.16;
   styleUrls: ['./step2.component.scss'],
 })
 export class Step2Component implements OnInit {
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
+
+  // Pie
+  public pieChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+    },
+  };
+
+  public pieChartData: ChartData<'pie', number[], string | string[]> = {
+    labels: [['Nbre de croissants'], ['Nbre Chocolatines']],
+    datasets: [
+      {
+        data: [1, 1],
+      },
+    ],
+  };
+
+  public pieChartType: ChartType = 'pie';
+
   chocolatines$: Observable<number> = timer(0, 3000)
     .pipe(map((x) => CHOLATINES_PRODUCTION * x))
     .pipe(shareReplay(1));
@@ -112,6 +139,16 @@ export class Step2Component implements OnInit {
           newOrder.moenyChocolatines,
         moneyCroissants:
           newOrder.nbOfCroissants * CROISSANT_PRICE + newOrder.moneyCroissants,
+      };
+    }),
+    tap((orders) => {
+      this.pieChartData.datasets[0].data = [
+        orders.nbOfCroissants,
+        orders.nbOfChocolatines,
+      ];
+
+      this.pieChartData = {
+        ...this.pieChartData,
       };
     })
   );
