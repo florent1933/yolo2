@@ -9,6 +9,9 @@ import { DisplayComponent } from './feat/display/display.component';
 import { Step1Component } from './feat/rxjs/step1/step1.component';
 import { Step2Component } from './feat/rxjs/step2/step2.component';
 import { NgChartsModule } from 'ng2-charts';
+import { SwComponent } from './feat/rxjs/sw/sw.component';
+
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,8 +21,9 @@ import { NgChartsModule } from 'ng2-charts';
     DisplayComponent,
     Step1Component,
     Step2Component,
+    SwComponent,
   ],
-  imports: [BrowserModule, FormsModule, NgChartsModule],
+  imports: [BrowserModule, FormsModule, NgChartsModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent],
 })

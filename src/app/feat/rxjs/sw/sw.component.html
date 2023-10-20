@@ -1,0 +1,8 @@
+<p>sw works!</p>
+
+<div *ngFor="let planet of planets$ | async" class="planet">
+  <h3>Nom : {{ planet.name }}</h3>
+  {{ planet.population }}<br />
+  Climat: {{ planet.climate }}<br />
+  Terrain : {{ planet.terrain }}<br />
+</div>
