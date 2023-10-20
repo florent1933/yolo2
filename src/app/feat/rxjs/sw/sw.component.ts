@@ -1,6 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Observable, map, of } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  combineLatest,
+  map,
+  of,
+  shareReplay,
+} from 'rxjs';
 
 interface Planet {
   name: string;
@@ -34,6 +41,13 @@ interface Result {
 export class SwComponent implements OnInit {
   planets$: Observable<Planet[]> = of([]);
 
+  filteredPlanets$: Observable<Planet[]> = of([]);
+
+  climatsAvailable$: Observable<string[]> = of([]);
+  terrainsAvailable$: Observable<string[]> = of([]);
+
+  userFilter = new BehaviorSubject<string>('');
+
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
@@ -41,6 +55,35 @@ export class SwComponent implements OnInit {
       map((result) => {
         console.log(result);
         return result.results;
+      }),
+      shareReplay(1)
+    );
+
+    this.climatsAvailable$ = this.planets$.pipe(
+      map((planets) => {
+        const climats = planets.map((planet) => planet.climate);
+        return climats;
+      })
+    );
+
+    this.terrainsAvailable$ = this.planets$.pipe(
+      map((planets) => {
+        const terrains = planets.map((planet) => planet.terrain);
+        return terrains;
+      })
+    );
+
+    this.filteredPlanets$ = combineLatest([
+      this.planets$,
+      this.userFilter,
+    ]).pipe(
+      map(([planets, userFilter]) => {
+        if (!userFilter?.length) {
+          return planets;
+        }
+        return planets.filter((planet) => {
+          return planet.terrain.includes(userFilter);
+        });
       })
     );
   }

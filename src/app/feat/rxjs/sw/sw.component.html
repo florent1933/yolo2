@@ -1,8 +1,33 @@
 <p>sw works!</p>
 
-<div *ngFor="let planet of planets$ | async" class="planet">
+<h1>Star wars planets ({{ (planets$ | async)?.length }})</h1>
+
+<div>
+  Available climats:
+  <ul>
+    <li *ngFor="let climat of climatsAvailable$ | async">
+      {{ climat }}
+    </li>
+  </ul>
+</div>
+
+<div>
+  Available terrains:<br />
+  Filter: {{ userFilter | async }}<br />
+  <button *ngIf="(userFilter | async)?.length" (click)="userFilter.next('')">
+    Clear filter
+  </button>
+  <ul>
+    <li *ngFor="let terrain of terrainsAvailable$ | async">
+      {{ terrain }}
+
+      <button (click)="userFilter.next(terrain)">Filter</button>
+    </li>
+  </ul>
+</div>
+
+<div *ngFor="let planet of filteredPlanets$ | async" class="planet">
   <h3>Nom : {{ planet.name }}</h3>
-  {{ planet.population }}<br />
   Climat: {{ planet.climate }}<br />
   Terrain : {{ planet.terrain }}<br />
 </div>
